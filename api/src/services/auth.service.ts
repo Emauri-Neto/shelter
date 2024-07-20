@@ -1,4 +1,4 @@
-import { APP_ORIGIN, JWT_REFRESH_SECRET, JWT_SECRET } from '../constants/env';
+import { CLIENT_URL, JWT_REFRESH_SECRET, JWT_SECRET } from '../constants/env';
 import { CONFLICT, INTERNAL_SERVER_ERROR, NOT_FOUND, TOO_MANY_REQUESTS, UNAUTHORIZED } from '../constants/http';
 import VerificationCodeTypes from '../constants/verificationCodeTypes';
 import SessionModel from '../models/session.model';
@@ -47,7 +47,7 @@ export const createAccount = async (data: CreateAccountParams) => {
         expiresAt: oneYearFromNow()
     });
     // send email verification
-    const url = `${APP_ORIGIN}/email/verify/${verificationCode._id}`;
+    const url = `${CLIENT_URL}/email/verify/${verificationCode._id}`;
 
     const { error } = await sendMail({
         to: user.email,
@@ -204,7 +204,7 @@ export const sendPasswordResetEmail = async (email: string) => {
     });
 
     // send verification email
-    const url = `${APP_ORIGIN}/password/reset?code=${verificationCode._id}&exp=${expiresAt.getTime()}`;
+    const url = `${CLIENT_URL}/password/reset?code=${verificationCode._id}&exp=${expiresAt.getTime()}`;
 
     const { data, error } = await sendMail({
         to: user.email,
